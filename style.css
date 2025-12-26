@@ -7,13 +7,15 @@
 body {
     background-color: var(--dark);
     color: var(--text-color);
-    font-family: 'Playfair Display', serif; /* Roman havası veren font */
+    font-family: 'Playfair Display', serif;
     margin: 0;
-    height: 100vh;
+    /* Mobilde adres çubuğu sorununu çözer (dvh = dynamic viewport height) */
+    height: 100vh; 
+    height: 100dvh; 
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow: hidden; /* Sayfanın kendisi kaymasın, sadece kartın içi kaysın */
 }
 
 .overlay {
@@ -26,39 +28,42 @@ body {
 .container {
     text-align: center;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-top: 10px;
+    padding-bottom: 20px; /* Alttan biraz pay */
 }
 
 header {
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Başlığı karta çok yapıştırma */
     z-index: 10;
+    flex-shrink: 0; /* Başlık sıkışmasın */
 }
 
 .brand-logo {
     font-family: 'Cinzel', serif;
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: var(--gold);
-    letter-spacing: 6px;
+    letter-spacing: 4px;
     opacity: 0.8;
 }
 
 .subtitle {
     font-family: 'Cinzel', serif;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     color: #fff;
     text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
     margin-top: 5px;
 }
 
-/* --- KART YAPISI --- */
+/* --- KART YAPISI (MOBİL AYAR BURADA) --- */
 .card-scene {
-    width: 360px; /* Geniş okuma alanı */
-    height: 620px; /* Yüksek, uzun metinler için */
+    width: 320px; /* Genişlik ideal */
+    /* Yükseklik ARTIK SABİT DEĞİL! Ekranın %75'i kadar olsun */
+    height: 75vh; 
+    max-height: 650px; /* Çok büyük ekranlarda devleşmesin */
     perspective: 1000px;
     position: relative;
     z-index: 5;
@@ -71,7 +76,7 @@ header {
     transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transform-style: preserve-3d;
     cursor: pointer;
-    animation: floatCard 6s ease-in-out infinite; /* Nefes alma efekti */
+    animation: floatCard 6s ease-in-out infinite;
 }
 
 .card-container.flipped {
@@ -85,7 +90,7 @@ header {
     height: 100%;
     backface-visibility: hidden;
     border-radius: 16px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -95,7 +100,7 @@ header {
     background: #000;
 }
 
-/* --- ARKA YÜZ (GİZEM) --- */
+/* --- ARKA YÜZ --- */
 .card-back {
     background: linear-gradient(135deg, #080808, #1c1c1c);
     z-index: 2;
@@ -103,7 +108,8 @@ header {
 
 .mystic-circle {
     position: absolute;
-    width: 240px; height: 240px;
+    width: 80%; /* Yüzde verdik ki taşmasın */
+    padding-bottom: 80%; /* Kare olması için */
     border: 1px dashed rgba(212, 175, 55, 0.2);
     border-radius: 50%;
     animation: spin 30s linear infinite;
@@ -118,16 +124,16 @@ header {
 }
 
 .tap-hint {
-    margin-top: 180px;
-    font-size: 0.75rem;
+    margin-top: 150px;
+    font-size: 0.7rem;
     color: #666;
     font-family: 'Cinzel', serif;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     text-transform: uppercase;
     z-index: 3;
 }
 
-/* --- ÖN YÜZ (HİKAYE) --- */
+/* --- ÖN YÜZ (OKUMA ALANI) --- */
 .card-front {
     background: #0b0b0b;
     transform: rotateY(180deg);
@@ -137,7 +143,7 @@ header {
 .card-content-full {
     width: 100%;
     height: 100%;
-    padding: 30px 25px;
+    padding: 20px 20px; /* Kenar boşlukları */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -148,41 +154,45 @@ header {
 .card-content-full h2 {
     font-family: 'Cinzel', serif;
     color: var(--gold);
-    font-size: 1.3rem;
-    margin: 0 0 15px 0;
-    padding-bottom: 15px;
+    font-size: 1.2rem;
+    margin: 0 0 10px 0;
+    padding-bottom: 10px;
     border-bottom: 1px solid #333;
     flex-shrink: 0;
-    letter-spacing: 1px;
 }
 
-/* --- PREMIUM METİN ALANI --- */
+/* --- TELEFONDA KAYDIRMAYI ÇÖZEN KISIM --- */
 .story-scroll {
-    flex-grow: 1;
-    overflow-y: auto;
+    flex-grow: 1; /* Boş alanı doldur */
+    overflow-y: auto; /* Dikey kaydırmayı aç */
     padding-right: 5px;
     margin-bottom: 10px;
-    /* Scrollbar Gizleme */
+    
+    /* iPhone/Android için dokunmatik kaydırma hızı */
+    -webkit-overflow-scrolling: touch; 
+    
+    /* Scrollbar Gizle */
     scrollbar-width: none; 
     -ms-overflow-style: none;
-    mask-image: linear-gradient(to bottom, black 90%, transparent 100%); /* Alt tarafı yumuşat */
+    mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
 }
 .story-scroll::-webkit-scrollbar { display: none; }
 
 .story-scroll p {
-    font-size: 1.05rem;
-    line-height: 1.8; /* Satır aralığı geniş, okuması kolay */
+    font-size: 1rem; /* Telefonta rahat okunur */
+    line-height: 1.6;
     color: #ccc;
-    text-align: justify; /* Kitap sayfası gibi blok */
+    text-align: justify;
     margin: 0;
-    white-space: pre-line; /* Paragrafları tanıması için */
+    white-space: pre-line;
+    padding-bottom: 20px; /* En altta parmak payı */
 }
 
 .end-mark {
     text-align: center;
     color: var(--gold);
-    margin-top: 20px;
-    margin-bottom: 40px; /* En altta boşluk bırak */
+    margin-top: 15px;
+    margin-bottom: 20px;
     font-size: 0.8rem;
     opacity: 0.5;
 }
@@ -190,22 +200,22 @@ header {
 /* --- İPUÇLARI --- */
 .scroll-indicator {
     position: absolute;
-    bottom: 90px;
+    bottom: 80px;
     left: 50%;
     transform: translateX(-50%);
     color: var(--gold);
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     animation: bounce 2s infinite;
     opacity: 0.7;
     pointer-events: none;
-    text-shadow: 0 0 10px #000;
+    z-index: 10;
 }
 
 .advice-box {
-    background: rgba(212, 175, 55, 0.03);
-    padding: 15px;
+    background: rgba(212, 175, 55, 0.05);
+    padding: 10px;
     border-radius: 8px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: #fff;
     border: 1px solid rgba(212, 175, 55, 0.15);
     flex-shrink: 0;
@@ -215,17 +225,17 @@ header {
 }
 
 .instruction {
-    margin-top: 25px;
-    font-size: 0.8rem;
+    margin-top: 15px;
+    font-size: 0.75rem;
     color: #555;
     font-style: italic;
-    letter-spacing: 1px;
+    flex-shrink: 0;
 }
 
 /* ANİMASYONLAR */
 @keyframes floatCard {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px); }
+    50% { transform: translateY(-10px); }
 }
 
 @keyframes pulse {
