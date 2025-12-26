@@ -9,13 +9,12 @@ body {
     color: var(--text-color);
     font-family: 'Playfair Display', serif;
     margin: 0;
-    /* Mobilde adres çubuğu sorununu çözer (dvh = dynamic viewport height) */
-    height: 100vh; 
-    height: 100dvh; 
+    height: 100vh;
+    height: 100dvh; /* Mobilde tam ekran garantisi */
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* Sayfanın kendisi kaymasın, sadece kartın içi kaysın */
+    overflow: hidden; /* Sayfa kaymasın */
 }
 
 .overlay {
@@ -33,13 +32,13 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-bottom: 20px; /* Alttan biraz pay */
+    padding-bottom: 20px;
 }
 
 header {
-    margin-bottom: 15px; /* Başlığı karta çok yapıştırma */
+    margin-bottom: 10px;
     z-index: 10;
-    flex-shrink: 0; /* Başlık sıkışmasın */
+    flex-shrink: 0;
 }
 
 .brand-logo {
@@ -58,12 +57,12 @@ header {
     margin-top: 5px;
 }
 
-/* --- KART YAPISI (MOBİL AYAR BURADA) --- */
+/* --- KART YAPISI --- */
 .card-scene {
-    width: 320px; /* Genişlik ideal */
-    /* Yükseklik ARTIK SABİT DEĞİL! Ekranın %75'i kadar olsun */
-    height: 75vh; 
-    max-height: 650px; /* Çok büyük ekranlarda devleşmesin */
+    width: 320px;
+    /* Kart yüksekliği ekranın %70'i olsun, taşmasın */
+    height: 70vh; 
+    max-height: 600px;
     perspective: 1000px;
     position: relative;
     z-index: 5;
@@ -73,7 +72,7 @@ header {
     width: 100%;
     height: 100%;
     position: relative;
-    transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transform-style: preserve-3d;
     cursor: pointer;
     animation: floatCard 6s ease-in-out infinite;
@@ -81,35 +80,37 @@ header {
 
 .card-container.flipped {
     transform: rotateY(180deg);
-    animation: none;
+    animation: none; /* Açılınca animasyon dursun ki rahat kaydırılsın */
 }
 
 .card-face {
     position: absolute;
     width: 100%;
     height: 100%;
-    backface-visibility: hidden;
+    backface-visibility: hidden; /* Arka yüzü gizle */
+    -webkit-backface-visibility: hidden; /* Safari için */
     border-radius: 16px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.8);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
     border: 1px solid rgba(212, 175, 55, 0.6);
     background: #000;
+    /* overflow: hidden; -> BUNU KALDIRDIM, bazen kaydırmayı engelliyor */
 }
 
 /* --- ARKA YÜZ --- */
 .card-back {
     background: linear-gradient(135deg, #080808, #1c1c1c);
     z-index: 2;
+    overflow: hidden; /* Sadece arka yüzde kalsın */
 }
 
 .mystic-circle {
     position: absolute;
-    width: 80%; /* Yüzde verdik ki taşmasın */
-    padding-bottom: 80%; /* Kare olması için */
+    width: 80%;
+    padding-bottom: 80%;
     border: 1px dashed rgba(212, 175, 55, 0.2);
     border-radius: 50%;
     animation: spin 30s linear infinite;
@@ -133,17 +134,18 @@ header {
     z-index: 3;
 }
 
-/* --- ÖN YÜZ (OKUMA ALANI) --- */
+/* --- ÖN YÜZ --- */
 .card-front {
     background: #0b0b0b;
     transform: rotateY(180deg);
     padding: 0;
+    z-index: 5; /* Öne çıksın */
 }
 
 .card-content-full {
     width: 100%;
     height: 100%;
-    padding: 20px 20px; /* Kenar boşlukları */
+    padding: 20px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -161,31 +163,38 @@ header {
     flex-shrink: 0;
 }
 
-/* --- TELEFONDA KAYDIRMAYI ÇÖZEN KISIM --- */
+/* --- KAYDIRMA ALANI (GÜÇLENDİRİLMİŞ) --- */
 .story-scroll {
-    flex-grow: 1; /* Boş alanı doldur */
-    overflow-y: auto; /* Dikey kaydırmayı aç */
+    flex: 1; /* Esnek alan */
+    width: 100%;
+    overflow-y: auto; /* Dikey kaydırma */
+    overflow-x: hidden;
+    
+    /* İŞTE SİHİRLİ KODLAR BURADA: */
+    -webkit-overflow-scrolling: touch; /* iPhone'da yağ gibi kaydır */
+    touch-action: pan-y; /* Sadece dikey harekete izin ver */
+    transform: translateZ(0); /* Donanım hızlandırmayı aç */
+    
     padding-right: 5px;
     margin-bottom: 10px;
-    
-    /* iPhone/Android için dokunmatik kaydırma hızı */
-    -webkit-overflow-scrolling: touch; 
     
     /* Scrollbar Gizle */
     scrollbar-width: none; 
     -ms-overflow-style: none;
     mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
 }
 .story-scroll::-webkit-scrollbar { display: none; }
 
 .story-scroll p {
-    font-size: 1rem; /* Telefonta rahat okunur */
+    font-size: 1rem;
     line-height: 1.6;
     color: #ccc;
     text-align: justify;
     margin: 0;
     white-space: pre-line;
-    padding-bottom: 20px; /* En altta parmak payı */
+    padding-bottom: 40px; /* Altta bolca boşluk bırak ki parmak rahat etsin */
+    pointer-events: auto; /* Metne dokunmayı garantile */
 }
 
 .end-mark {
@@ -200,7 +209,7 @@ header {
 /* --- İPUÇLARI --- */
 .scroll-indicator {
     position: absolute;
-    bottom: 80px;
+    bottom: 85px;
     left: 50%;
     transform: translateX(-50%);
     color: var(--gold);
