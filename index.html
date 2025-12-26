@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FTHLABZ ORACLE</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <div class="container">
+        <header>
+            <div class="brand-logo">FTHLABZ</div>
+            <div class="subtitle">THE MIRROR</div>
+        </header>
+
+        <div class="card-scene">
+            <div class="card-container" id="tarotCard" onclick="kartSec()">
+                
+                <div class="card-face card-back">
+                    <div class="mystic-circle"></div>
+                    <div class="symbol">👁‍🗨</div>
+                    <div class="tap-hint">Kendi Yansımanı Görmek İçin Dokun</div>
+                </div>
+
+                <div class="card-face card-front">
+                    <div class="card-content-full">
+                        <h2 id="cardName">...</h2>
+                        
+                        <div class="story-scroll" onscroll="okGizle()">
+                            <p id="cardDesc">...</p>
+                            
+                            <div class="end-mark">✦ ✦ ✦</div>
+                        </div>
+                        
+                        <div class="scroll-indicator" id="scrollArrow">
+                            <span>▼</span>
+                        </div>
+                        
+                        <div class="advice-box">
+                            <strong>🗝 KİLİT CÜMLE:</strong><br>
+                            <span id="cardAdvice">...</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="instruction" id="instructionText">
+            Zihnini boşalt, derin bir nefes al ve karta dokun.
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

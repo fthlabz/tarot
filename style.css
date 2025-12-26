@@ -1,0 +1,242 @@
+:root {
+    --gold: #d4af37;
+    --dark: #050505;
+    --text-color: #e0e0e0;
+}
+
+body {
+    background-color: var(--dark);
+    color: var(--text-color);
+    font-family: 'Playfair Display', serif; /* Roman havası veren font */
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at center, #1a1a1a 0%, #000000 90%);
+    z-index: -1;
+}
+
+.container {
+    text-align: center;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px;
+}
+
+header {
+    margin-bottom: 20px;
+    z-index: 10;
+}
+
+.brand-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: 6px;
+    opacity: 0.8;
+}
+
+.subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    color: #fff;
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    margin-top: 5px;
+}
+
+/* --- KART YAPISI --- */
+.card-scene {
+    width: 360px; /* Geniş okuma alanı */
+    height: 620px; /* Yüksek, uzun metinler için */
+    perspective: 1000px;
+    position: relative;
+    z-index: 5;
+}
+
+.card-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+    cursor: pointer;
+    animation: floatCard 6s ease-in-out infinite; /* Nefes alma efekti */
+}
+
+.card-container.flipped {
+    transform: rotateY(180deg);
+    animation: none;
+}
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border: 1px solid rgba(212, 175, 55, 0.6);
+    background: #000;
+}
+
+/* --- ARKA YÜZ (GİZEM) --- */
+.card-back {
+    background: linear-gradient(135deg, #080808, #1c1c1c);
+    z-index: 2;
+}
+
+.mystic-circle {
+    position: absolute;
+    width: 240px; height: 240px;
+    border: 1px dashed rgba(212, 175, 55, 0.2);
+    border-radius: 50%;
+    animation: spin 30s linear infinite;
+}
+
+.card-back .symbol {
+    font-size: 3.5rem;
+    color: var(--gold);
+    animation: pulse 3s infinite;
+    z-index: 3;
+    opacity: 0.8;
+}
+
+.tap-hint {
+    margin-top: 180px;
+    font-size: 0.75rem;
+    color: #666;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    z-index: 3;
+}
+
+/* --- ÖN YÜZ (HİKAYE) --- */
+.card-front {
+    background: #0b0b0b;
+    transform: rotateY(180deg);
+    padding: 0;
+}
+
+.card-content-full {
+    width: 100%;
+    height: 100%;
+    padding: 30px 25px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+}
+
+.card-content-full h2 {
+    font-family: 'Cinzel', serif;
+    color: var(--gold);
+    font-size: 1.3rem;
+    margin: 0 0 15px 0;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #333;
+    flex-shrink: 0;
+    letter-spacing: 1px;
+}
+
+/* --- PREMIUM METİN ALANI --- */
+.story-scroll {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+    margin-bottom: 10px;
+    /* Scrollbar Gizleme */
+    scrollbar-width: none; 
+    -ms-overflow-style: none;
+    mask-image: linear-gradient(to bottom, black 90%, transparent 100%); /* Alt tarafı yumuşat */
+}
+.story-scroll::-webkit-scrollbar { display: none; }
+
+.story-scroll p {
+    font-size: 1.05rem;
+    line-height: 1.8; /* Satır aralığı geniş, okuması kolay */
+    color: #ccc;
+    text-align: justify; /* Kitap sayfası gibi blok */
+    margin: 0;
+    white-space: pre-line; /* Paragrafları tanıması için */
+}
+
+.end-mark {
+    text-align: center;
+    color: var(--gold);
+    margin-top: 20px;
+    margin-bottom: 40px; /* En altta boşluk bırak */
+    font-size: 0.8rem;
+    opacity: 0.5;
+}
+
+/* --- İPUÇLARI --- */
+.scroll-indicator {
+    position: absolute;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--gold);
+    font-size: 1.5rem;
+    animation: bounce 2s infinite;
+    opacity: 0.7;
+    pointer-events: none;
+    text-shadow: 0 0 10px #000;
+}
+
+.advice-box {
+    background: rgba(212, 175, 55, 0.03);
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: #fff;
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    flex-shrink: 0;
+    text-align: center;
+    z-index: 5;
+    background-color: #0b0b0b;
+}
+
+.instruction {
+    margin-top: 25px;
+    font-size: 0.8rem;
+    color: #555;
+    font-style: italic;
+    letter-spacing: 1px;
+}
+
+/* ANİMASYONLAR */
+@keyframes floatCard {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);}
+    40% {transform: translateX(-50%) translateY(-10px);}
+    60% {transform: translateX(-50%) translateY(-5px);}
+}
